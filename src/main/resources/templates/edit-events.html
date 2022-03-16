@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/dashboard.css" />
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container-fluid text-center">
+    <div><h2>Events List</h2></div>
+    <div th:if="${message}" class="alert-success text-center">
+        [[${message}]]
+    </div>
+    <table border="1" class = "table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>
+                <a>Event Name</a>
+            </th>
+            <th>
+                <a>Date</a>
+            </th>
+            <th>
+                <a>Status</a>
+            </th>
+            <th> Update </th>
+            <th> Delete </th>
+            <th> Cancel </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="event : ${events}">
+            <td th:text="${event.name}"></td>
+            <td th:text="${event.date}"></td>
+            <td th:text="${event.status}"></td>
+            <td> <a th:href="@{/admin/update/{id}(id=${event.id})}" class="btn btn-primary">Update</a></td>
+            <td> <a th:href="@{/admin/delete/{id}(id=${event.id})}" class="btn btn-danger">Delete</a></td>
+            <td> <a th:href="@{/admin/cancel/{id}(id=${event.id})}" class="btn btn-warning">Cancel</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div style="text-align:center;">
+    <a class="btn btn-dark" style="text-align: center" href="#" th:href="@{/admin/dashboard}">Back</a>
+</div>
+</body>
+</html>

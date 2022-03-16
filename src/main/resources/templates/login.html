@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Login Page</title>
+		<link rel="stylesheet" type="text/css" href="/static/css/login.css" />
+		<link rel="stylesheet"
+			  href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+			  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+			  crossorigin="anonymous">
+	</head>
+	<body>
+		<div class="container">
+			<div class="form">
+				<h2>Login</h2>
+
+				<!--/*@thymesVar id="error" type=""*/-->
+				<p class="warning" th:if="${error}" th:utext="${error}"></p>
+
+				<form th:action="@{/auth/login}" method="POST">
+					<label>Username</label>
+					<input type="text" name="username" required>
+					<label>Password</label>
+					<input type="password" name="password" required>
+					<button type="submit" class="btn btn-dark" style="margin-top: 20px">Submit</button>
+				</form>
+
+				<a href="#" th:href="@{/auth/register}">Click Here to Signup</a>
+			</div>
+			<div class="main_info">
+				<h2>All events</h2>
+				<table border="1" class = "table table-striped table-responsive-md">
+					<thead>
+					<tr>
+						<th><a>Event Name</a></th>
+						<th><a>Date</a></th>
+						<th><a>Status</a></th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr th:each="event : ${events}">
+						<td th:text="${event.name}"></td>
+						<td th:text="${event.date}"></td>
+						<td th:text="${event.status}"></td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
