@@ -11,7 +11,10 @@
 			  crossorigin="anonymous">
 	</head>
 	<body>
-	<h1>Welcome to User Panel</h1>
+	<h1>
+		<!--/*@thymesVar id="username" type="java.lang.String"*/-->
+		<a th:text="${user.username}"></a>, Welcome to User Panel
+	</h1>
 	<div class="container">
 		<h1 style="position: center">Events List</h1>
 
@@ -31,7 +34,9 @@
 			</tr>
 			</thead>
 			<tbody>
+			<!--/*@thymesVar id="events" type="java.util.List"*/-->
 			<tr th:each="event : ${events}">
+				<!--/*@thymesVar id="name" type="java.lang.String"*/-->
 				<td th:text="${event.name}"></td>
 				<td th:text="${event.date}"></td>
 				<td th:text="${event.status}"></td>
