@@ -1,11 +1,11 @@
 package com.stadium.app.model.entity;
 
+import com.stadium.app.model.dto.PlaceDto;
 import com.stadium.app.model.enums.Sector;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Data
 @Entity
@@ -32,33 +32,57 @@ public class AvailablePlace {
     private Event event;
 
     @Transient
-    private HashMap<String, Float> prices = new HashMap<String, Float>();
-
-
+    private Map<String, Float> prices = new LinkedHashMap<>();
 
     public AvailablePlace() {
-        A1 = 1000;
-        A2 = 1000;
+        A1 = 2000;
+        A2 = 2000;
         B1 = 1000;
-        B2 = 1000;
-        B3 = 1000;
+        B2 = 500;
+        B3 = 500;
         Lounge = 50;
         for (Sector sector : Sector.values()){
             prices.put(sector.name(), (float) Math.random() * 1000F);
         }
     }
-    public void setPrices(Float A1Price, Float A2Price, Float B1Price, Float B2Price, Float B3Price, Float LoungePrice){
-        prices.clear();
-        prices.put(Sector.A1.name(), A1Price);
-        prices.put(Sector.A2.name(), A2Price);
-        prices.put(Sector.B1.name(), B1Price);
-        prices.put(Sector.B2.name(), B2Price);
-        prices.put(Sector.B3.name(), B3Price);
-        prices.put(Sector.Lounge.name(), LoungePrice);
+    public List<Integer> getPlaces(){
+        List<Integer> places = new ArrayList<>();
+        List<PlaceDto> dtos = new ArrayList<>();
+        places.add(A1);
+        places.add(A2);
+        places.add(B1);
+        places.add(B2);
+        places.add(B3);
+        places.add(Lounge);
+        return places;
     }
 
     public Map<String, Float> getPrices(){
         return prices;
+    }
+
+    public List<PlaceDto> getDto(){
+            List<PlaceDto> dtos = new ArrayList<>();
+        int index = 0;
+        for(var sector :Sector.values()){
+            dtos.add(new PlaceDto(sector.name(), prices.get(sector.name()), getPlaces().get(index)));
+            index++;
+        }
+        return dtos;
+    }
+
+    public Integer getPlacesBySectorName(Sector sector){
+        Integer answer;
+        switch (sector) {
+            case A1 -> answer = A1;
+            case A2 -> answer = A2;
+            case B1 -> answer = B1;
+            case B2 -> answer = B2;
+            case B3 -> answer = B3;
+            case Lounge -> answer = Lounge;
+            default -> answer = 0;
+        }
+        return answer;
     }
 
     public Float buyTicket(Sector sector) {

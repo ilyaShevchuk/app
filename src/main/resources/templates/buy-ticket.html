@@ -9,29 +9,140 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
           crossorigin="anonymous">
+    <script src="/webjars/jquery/jquery.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script src="/app.js"></script>
 </head>
 <body>
-<h1>All events</h1>
+<script>
+    let sectors = [];
+</script>
+<h1 id="eventName" th:text="${event.name}"></h1>
 <div class="container-fluid text-center">
-    <table border="1" class="table table-striped table-responsive-md" style="width: 40%; position: center;">
+    <table border="1" class="table table-striped table-responsive-md text-center">
         <thead>
         <tr>
             <th><a>Sector</a></th>
             <th><a>Price</a></th>
-            <th><a>Actions</a></th>
+            <th><a>Available</a></th>
+            <th><a>Buy</a></th>
+            <th><a>Reserve</a></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="place : ${places}">
-            <td th:text="${place.key}"></td>
-            <td th:text="${place.value}"></td>
+        <!--/*@thymesVar id="places" type="java.util.List"*/-->
+        <tr>
+            <td th:text="${place0.sector}"></td>
+            <td th:text="${place0.price}"></td>
+            <td id="place0" th:text="${place0.places}"></td>
+            <script th:inline="javascript">
+                var eventId = [[${event.id}]];
+                var sector0 = [[${place0.sector}]];
+                var price0 = [[${place0.price}]];
+                var place0 = [[${place0.places}]];
+            </script>
             <td>
-                <form method="POST"
-                      th:action="@{/user/pay(eventId=${event.id}, sector=${place.key}, price=${place.value})}">
-                    <button type="submit" name="submit" value="value" class="btn btn-primary">BUY</button>
-                </form>
-                <!--                    <a th:href="@{/user/buy//{id}(id=${event.id})}" class="btn btn-primary">Buy</a>-->
-                <!--                    <a th:href="@{/user/reserve//{id}(id=${event.id})}" class="btn btn-primary">Reserve</a>-->
+                <button type="button" class="btn btn-indigo btn-sm m-0"
+                   th:href="@{/user/pay/(eventId=${event.id}, sector=${place0.sector}, price=${place0.price})}">Buy</button>
+            </td>
+            <td>
+                <button id=btn0 onclick="reserveTicket(eventId, sector0, 'place0', place0)"
+                        type="button"
+                        class="btn btn-indigo btn-sm m-0">
+                    Reserve
+                </button>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="${place1.sector}"></td>
+            <td th:text="${place1.price}"></td>
+            <td id="place1" th:text="${place1.places}"></td>
+            <script th:inline="javascript">
+                var sector1 = [[${place1.sector}]];
+                var price1 = [[${place1.price}]];
+                var place1 = [[${place1.places}]];
+            </script>
+            <td>
+                <button type="button" class="btn btn-indigo btn-sm m-0"
+                   th:href="@{/user/pay/(eventId=${event.id}, sector=${place1.sector}, price=${place1.price})}">Buy</button>
+            </td>
+            <td>
+                <button id=btn1 onclick="reserveTicket(eventId, sector1, 'place1', place1)"
+                        type="button"
+                        class="btn btn-indigo btn-sm m-0">Reserve</button>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="${place2.sector}"></td>
+            <td th:text="${place2.price}"></td>
+            <td id="place2" th:text="${place2.places}"></td>
+            <script th:inline="javascript">
+                var sector2 = [[${place2.sector}]];
+                var price2 = [[${place2.price}]];
+                var place2 = [[${place2.places}]];
+            </script>
+            <td>
+                <button type="button" class="btn btn-indigo btn-sm m-0"
+                   th:href="@{/user/pay/(eventId=${event.id}, sector=${place2.sector}, price=${place2.price})}">Buy</button>
+            </td>
+            <td>
+                <button id=btn2 onclick="reserveTicket(eventId, sector2, 'place2', place2)"
+                        type="button" class="btn btn-indigo btn-sm m-0">Reserve</button>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="${place3.sector}"></td>
+            <td th:text="${place3.price}"></td>
+            <td id="place3" th:text="${place3.places}"></td>
+            <script th:inline="javascript">
+                var sector3 = [[${place3.sector}]];
+                var price3 = [[${place3.price}]];
+                var place3 = [[${place3.places}]];
+            </script>
+            <td>
+                <button type="button" class="btn btn-indigo btn-sm m-0"
+                   th:href="@{/user/pay/(eventId=${event.id}, sector=${place3.sector}, price=${place3.price})}">Buy</button>
+            </td>
+            <td>
+                <button id=btn3 onclick="reserveTicket(eventId, sector3, 'place3', place3)"
+                        type="button" class="btn btn-indigo btn-sm m-0">Reserve</button>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="${place4.sector}"></td>
+            <td th:text="${place4.price}"></td>
+            <td id="place4" th:text="${place4.places}"></td>
+            <script th:inline="javascript">
+                var sector4 = [[${place4.sector}]];
+                var price4 = [[${place4.price}]];
+                var place4 = [[${place4.places}]];
+            </script>
+            <td>
+                <button type="button" class="btn btn-indigo btn-sm m-0"
+                   th:href="@{/user/pay/(eventId=${event.id}, sector=${place4.sector}, price=${place4.price})}">Buy</button>
+            </td>
+            <td>
+                <button id=btn4 onclick="reserveTicket(eventId, sector4, 'place4', place4)"
+                        type="button" class="btn btn-indigo btn-sm m-0">Reserve</button>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="${place5.sector}"></td>
+            <td th:text="${place5.price}"></td>
+            <td th:text="${place5.places}"></td>
+            <script th:inline="javascript">
+                var sector5 = [[${place5.sector}]];
+                var price5 = [[${place5.price}]];
+                var place5 = [[${place5.places}]];
+            </script>
+            <td>
+                <button type="button" class="btn btn-indigo btn-sm m-0"
+                   th:href="@{/user/pay/(eventId=${event.id}, sector=${place5.sector}, price=${place5.price})}">Buy</button>
+            </td>
+            <td>
+                <button id=btn5 onclick="reserveTicket(eventId, sector5, 'place5', place5)"
+                        type="button" class="btn btn-indigo btn-sm m-0">Reserve</button>
             </td>
         </tr>
         </tbody>

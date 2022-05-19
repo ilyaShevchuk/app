@@ -14,6 +14,7 @@ import com.stadium.app.model.requestBody.EventRequestBody;
 import com.stadium.app.repository.AvailablePlacesRepository;
 import com.stadium.app.repository.EventRepository;
 import com.stadium.app.repository.TicketRepository;
+import com.stadium.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,10 @@ public class EventService {
     private AvailablePlacesRepository placesRepository;
     @Autowired
     private TicketRepository ticketRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+
 
     public EventDto createEvent(String name, String date){
         AvailablePlace availablePlace = new AvailablePlace();
@@ -71,11 +76,6 @@ public class EventService {
         return new PricesDto(allPlaces.getPrices());
     }
 
-    public void setPrices(String eventName, Float A1Price, Float A2Price, Float B1Price,
-                          Float B2Price, Float B3Price, Float LoungePrice){
-        Event event = getEvent(eventName);
-        event.getAvailablePlaces().setPrices(A1Price, A2Price, B1Price, B2Price, B3Price, LoungePrice);
-    }
 
     public TicketDto sellTicket(String eventName, Sector sector){
         Event event = getEvent(eventName);
@@ -87,6 +87,18 @@ public class EventService {
         ticket.setStatus(Status.AVAILABLE);
         ticketRepository.save(ticket);
         return new TicketDto(event.getName(), event.getDate().toString(), price, Status.AVAILABLE);
+    }
+
+    public TicketDto reserveTicket(UserEntity userEntity, String eventName, Sector sector){
+        Event event = getEvent(eventName);
+        Float price = event.getAvailablePlaces().buyTicket(sector);
+        Ticket ticket = new Ticket(eventName, price, Status.RESERVED, sector);
+        ticket.setUser(userEntity);
+        userEntity.getTickets().add(ticket);
+        ticketRepository.save(ticket);
+        userRepository.save(userEntity);
+        eventRepository.save(event);
+        return new TicketDto(eventName, sector, event.getAvailablePlaces().getPlacesBySectorName(sector));
     }
 
     public void deleteEvent(Long id){
