@@ -29,7 +29,7 @@ create table if not exists tickets (
     price float,
     sector integer,
     status integer,
-    user varchar(255),
+    ticket_user varchar(255),
     primary key (ticket_id));
 
 create table if not exists user_role (
@@ -43,9 +43,9 @@ create table if not exists users (
     username varchar(255),
     primary key (user_id));
 
-alter table roles add constraint if not exists UK_g50w4r0ru3g9uf6i6fr4kpro8 unique (role);
-alter table users add constraint if not exists UK_r43af9ap4edm43mmtq01oddj6 unique (username);
-alter table events add constraint if not exists FKjqnyy8p0wqk5mqtoessqmapke foreign key (places_id) references available_place;
-alter table tickets add constraint if not exists FKc3hf3ec85snuo8fckf7hneg7 foreign key (user) references users;
-alter table user_role add constraint if not exists FKt7e7djp752sqn6w22i6ocqy6q foreign key (role_id) references roles;
-alter table user_role add constraint if not exists FKj345gk1bovqvfame88rcx7yyx foreign key (user_id) references users;
+alter table roles add constraint UK_g50w4r0ru3g9uf6i6fr4kpro8 unique (role);
+alter table users add constraint UK_r43af9ap4edm43mmtq01oddj6 unique (username);
+alter table events add constraint FKjqnyy8p0wqk5mqtoessqmapke foreign key (places_id) references available_place;
+alter table tickets add constraint FKc3hf3ec85snuo8fckf7hneg7 foreign key (ticket_user) references users;
+alter table user_role add constraint FKt7e7djp752sqn6w22i6ocqy6q foreign key (role_id) references roles;
+alter table user_role add constraint FKj345gk1bovqvfame88rcx7yyx foreign key (user_id) references users;

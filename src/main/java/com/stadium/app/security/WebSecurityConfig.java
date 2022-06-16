@@ -13,10 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @SuppressWarnings("deprecation")
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-	
+
 	@Autowired
 	private MyUserDetailsService myUserDetailsService;
-	
+
 	@Bean
 	PasswordEncoder passwordEncoder() {
 		return NoOpPasswordEncoder.getInstance();
@@ -29,13 +29,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userDetailsService(myUserDetailsService)
                     .passwordEncoder(passwordEncoder());
     }
-	
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 			.authorizeRequests()
 				.antMatchers("/static/**", "/static/css/**", "/templates/**", "/h2-console/**", "/auth/**",
-						"/spring-security-rest/**").permitAll()
+						"/swagger-ui.html/**", "/api-docs/**").permitAll()
 				.antMatchers("/user/**").hasAuthority("ROLE_USER")
 				.antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
 				.anyRequest().authenticated()
@@ -45,9 +45,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .and().logout();
-		
+
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
 	}
-	
+
 }

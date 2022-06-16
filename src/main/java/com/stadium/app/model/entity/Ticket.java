@@ -42,7 +42,7 @@ public class Ticket {
     @Setter
     @Getter
     @ManyToOne
-    @JoinColumn(name = "user")
+    @JoinColumn(name = "ticket_user")
     private UserEntity user;
 
     public Ticket(){
